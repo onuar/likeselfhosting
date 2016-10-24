@@ -8,7 +8,7 @@ namespace likeselfhosting
     {
         private readonly RequestDelegate _next;
 
-        public SelfHostingMiddleware (RequestDelegate next)
+        public SelfHostingMiddleware (RequestDelegate next, System.IServiceProvider provider)
         {
            _next = next;
         }
