@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace likeselfhosting
@@ -5,6 +6,8 @@ namespace likeselfhosting
     public class SelfHostingInitializer : IServiceConfigurator, ICompositeConfiguratorRunnable, ISelfHostingInitializer
     {
         private readonly IServiceCollection _services;
+
+        private IComponentMapper _mapper;
         public SelfHostingInitializer(IServiceCollection services)
         {
             _services = services;
@@ -12,13 +15,17 @@ namespace likeselfhosting
 
         public ICompositeConfiguratorRunnable Init()
         {
-            _services.AddSingleton<IComponentMapper, ComponentMapper>();
+            _mapper = new ComponentMapper();
+            _services.AddSingleton<IComponentMapper>(_mapper);
+            _services.AddTransient<IInstanceInitializer, InstanceInitializer>();
+            _services.AddTransient<IComponentInvoker, ComponentInvoker>();
             return this;
         }
 
         ICompositeConfiguratorRunnable IServiceConfigurator.AddComponent<TBase, TComponent>()
         {
             _services.AddTransient<TBase, TComponent>();
+            _mapper.AddComponent("compo", typeof(TBase));
             return this;
         }
 

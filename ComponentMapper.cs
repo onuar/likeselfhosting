@@ -1,12 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace likeselfhosting
 {
     public class ComponentMapper : IComponentMapper
     {
-        public Dictionary<string, Type> ServiceTypes { get; set; }
+        private readonly Dictionary<string, Type> _serviceTypes;
+
+        public ComponentMapper ()
+        {
+          _serviceTypes = new Dictionary<string,Type>();
+        }
+
+        public void AddComponent(string alias, Type type)
+        {
+            _serviceTypes.Add(alias,type);
+        }
+
+        public Type GetComponent(string alias)
+        {
+            Type type;
+            _serviceTypes.TryGetValue(alias,out type);
+            return type;
+        }
     }
 }
