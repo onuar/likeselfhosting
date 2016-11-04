@@ -4,6 +4,6 @@ namespace likeselfhosting
 {
     public interface IComponentInvoker
     {
-        object Invoke(Type component, RequestContext request);
+        object Invoke(Type componentType, RequestContext request);
     }
 }

@@ -34,6 +34,8 @@ namespace likeselfhosting
 
             var componentInstance = _provider.GetService(componentType);
 
+            var result = _invoker.Invoke(componentType, request);
+
             await context.Response.WriteAsync(componentInstance.GetType().ToString());
 
             // await context.Response.WriteAsync(request.Action);

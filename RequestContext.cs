@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace likeselfhosting
 {
-    internal class RequestContext
+    public class RequestContext
     {
         public string Component { get; set; }
         public string Action { get; set; }

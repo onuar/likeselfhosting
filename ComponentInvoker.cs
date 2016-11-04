@@ -4,13 +4,16 @@ namespace likeselfhosting
 {
     public class ComponentInvoker : IComponentInvoker
     {
-        public ComponentInvoker (IInstanceInitializer instanceInitializer)
+        private readonly IInstanceInitializer _instanceInitializer;
+        public ComponentInvoker(IInstanceInitializer instanceInitializer)
         {
-          
+            _instanceInitializer = instanceInitializer;
         }
-        public object Invoke(Type component, RequestContext request)
+        public object Invoke(Type componentType, RequestContext request)
         {
-            throw new NotImplementedException();
+            object instance = _instanceInitializer.GetInstance(componentType);
+
+            return null;
         }
     }
 }
