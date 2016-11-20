@@ -1,8 +1,10 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace likeselfhosting
 {
@@ -21,12 +23,7 @@ namespace likeselfhosting
 
         public async Task Invoke(HttpContext context)
         {
-            // await context.Response.WriteAsync(context.Request.Path);
-
             IComponentMapper mapper = _provider.GetService<IComponentMapper>();
-
-
-
             var pathParser = new PathParser();
             var request = pathParser.Parse(context.Request);
 
@@ -36,11 +33,11 @@ namespace likeselfhosting
 
             var result = _invoker.Invoke(componentType, request);
 
-            await context.Response.WriteAsync(componentInstance.GetType().ToString());
+            var serialized = JsonConvert.SerializeObject(result);
+            var bytes = Encoding.UTF8.GetBytes(serialized);
+            context.Response.ContentType = "application/json";
 
-            // await context.Response.WriteAsync(request.Action);
-
-            // await _next.Invoke(context);
+            await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
         }
     }
 

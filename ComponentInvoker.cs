@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace likeselfhosting
 {
@@ -12,8 +13,11 @@ namespace likeselfhosting
         public object Invoke(Type componentType, RequestContext request)
         {
             object instance = _instanceInitializer.GetInstance(componentType);
-
-            return null;
+            var method = componentType.GetMethod(request.Action);
+            ParameterInfo[] parameterInfos = method.GetParameters();
+            //pass method parameters
+            var result = method.Invoke(instance, null);
+            return result;
         }
     }
 }
